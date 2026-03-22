@@ -1,0 +1,155 @@
+=====================================================
+VIDEO REACTIVE LIGHT — Luz que reacciona al video
+=====================================================
+
+¿Qué hace este script?
+-----------------------
+Hace que una Point Light cambie de color e intensidad en tiempo real
+siguiendo el contenido de un video. Como el efecto Ambilight de las
+teles Philips, o como la TV en el juego P.T. (Silent Hills).
+
+En un entorno oscuro (un museo, una sala, una cueva) el efecto es
+muy atmosférico: el video "ilumina" las paredes y el suelo con sus
+colores.
+
+IMPORTANTE: El efecto se nota mucho más con VIDEOS A COLOR.
+Con videos en blanco y negro solo verás cambios de intensidad (más
+claro / más oscuro) pero no de color.
+
+
+Cómo configurarlo paso a paso
+------------------------------
+
+1. PREPARA EL VIDEO
+   - Importa un video a Unity (arrástralo a la carpeta Assets)
+   - Crea una RenderTexture: Assets → Create → Render Texture
+     (ponle un nombre como "MiVideoRT")
+
+2. CREA LA PANTALLA
+   - Crea un Plano o Cubo en la escena (será tu pantalla/TV)
+   - Añádele un componente VideoPlayer (Add Component → Video Player)
+   - En VideoPlayer:
+     · Video Clip: arrastra tu video
+     · Render Mode: "Render Texture"
+     · Target Texture: arrastra tu RenderTexture "MiVideoRT"
+     · Play On Awake: activado (para que arranque solo)
+     · Loop: activado (para que se repita)
+   - Crea un Material nuevo, ponle la RenderTexture como textura (Albedo)
+   - Aplica ese Material al Plano/Cubo
+
+3. CREA LA LUZ
+   - Click derecho en Hierarchy → Light → Point Light
+   - Ponla delante de la pantalla, a 1-2 metros, mirando hacia la sala
+   - Range: 10-25 (según el tamaño de tu espacio)
+   - Intensity: déjala en 1 (el script la controlará)
+
+4. AÑADE EL SCRIPT
+   - Crea un objeto vacío (Create Empty), llámalo "LuzReactiva"
+   - Add Component → busca "Video Reactive Light"
+   - Arrastra la RenderTexture "MiVideoRT" al campo "Video Render Texture"
+   - Arrastra la Point Light al campo "Main Light"
+
+5. OSCURECE LA ESCENA
+   - Baja la Directional Light a intensidad 0 (o desactívala)
+   - El efecto necesita oscuridad para verse bien
+   - Pon paredes y suelo cerca de la pantalla para que la luz rebote
+
+6. DALE PLAY
+   - Deberías ver la luz cambiar con el video
+   - Si no ves nada, sube el Intensity Multiplier a 20-30
+
+
+Modo Ambilight (4 luces)
+-------------------------
+Para un efecto más realista, puedes usar 4 luces en vez de 1:
+
+- Crea 4 Point Lights y colócalas alrededor de la pantalla:
+  · Light Top: arriba del borde superior
+  · Light Bottom: debajo del borde inferior
+  · Light Left: a la izquierda
+  · Light Right: a la derecha
+
+- Asígnalas en los campos del Inspector
+
+Cada luz reaccionará al color de SU ZONA del video. Si el cielo
+del video es azul y el suelo es marrón, la luz de arriba será azul
+y la de abajo marrón.
+
+
+Variables del Inspector — Qué hace cada una
+---------------------------------------------
+
+SAMPLE RESOLUTION (por defecto: 4)
+   Cuántos píxeles muestrea del video. El valor es el lado de un
+   cuadrado: 4 significa 4x4 = 16 píxeles.
+   · 2 = muy rápido, muy impreciso (4 píxeles)
+   · 4 = buen equilibrio (16 píxeles) ← recomendado
+   · 8 = más preciso (64 píxeles), algo más lento
+   · 16 = muy preciso (256 píxeles), no necesario
+   En la práctica apenas notarás diferencia entre 4 y 16.
+
+SAMPLE EVERY N FRAMES (por defecto: 3)
+   Cada cuántos frames analiza el video.
+   · 1 = analiza CADA frame. Más reactivo pero más trabajo para el PC.
+   · 3 = analiza cada 3 frames. Imperceptible para el ojo. ← recomendado
+   · 5-10 = muy ligero, pero la luz reacciona con más retraso.
+   Si tu juego va lento, sube este valor.
+
+SMOOTH SPEED (por defecto: 0.1)
+   Velocidad de la transición de color. Controla lo "suave" del cambio.
+   · 0.01 = MUY suave. La luz cambia lentamente, como una vela.
+           Bueno para ambientes contemplativos, meditación.
+   · 0.1 = Suave. Buen equilibrio. ← recomendado
+   · 0.3 = Rápido. La luz sigue el video casi en tiempo real.
+   · 0.5 = Instantáneo. La luz salta de color a color sin transición.
+           Bueno para efectos estroboscópicos o discoteca.
+
+SATURATION BOOST (por defecto: 1.5)
+   Multiplica la saturación del color.
+   Cuando promedias muchos píxeles, los colores tienden a "lavarse"
+   (acercarse al gris). Este multiplicador los recupera.
+   · 1.0 = sin cambio (color tal cual sale del promedio)
+   · 1.5 = boost moderado ← recomendado
+   · 2.5 = colores muy vivos, casi neón
+   · 3.0 = máximo, colores exagerados
+   ⚠️ CON VIDEO B/N ESTA VARIABLE NO HACE NADA.
+   Un video en blanco y negro tiene saturación = 0.
+   0 multiplicado por cualquier número sigue siendo 0.
+
+INTENSITY MULTIPLIER (por defecto: 15)
+   Controla lo fuerte que brilla la luz.
+   · 5 = tenue. Apenas ilumina. Bueno para efecto sutil.
+   · 15 = medio. Se nota claramente. ← recomendado
+   · 30 = fuerte. Ilumina toda la sala.
+   · 50 = muy fuerte. Como un proyector.
+   Ajústalo según el tamaño de tu espacio y el brillo del video.
+   Videos oscuros (terror, noche) necesitan más multiplicador.
+   Videos brillantes (exterior, día) necesitan menos.
+
+
+Consejos para que quede bien
+-----------------------------
+· USA VIDEOS A COLOR. El efecto brilla (literalmente) con color.
+· ESCENA OSCURA. Sin oscuridad no se nota la luz reactiva.
+· PAREDES CERCA. La luz necesita superficies donde rebotar.
+  Un espacio abierto sin paredes no mostrará el efecto.
+· MATERIALES CLAROS en las paredes. Una pared blanca o gris claro
+  refleja mejor la luz que una pared negra.
+· RANGE DE LA POINT LIGHT. Si la luz no llega a las paredes,
+  sube el Range en el componente Light (no en este script).
+· VARIAS PANTALLAS. Puedes tener varias pantallas con sus propias
+  luces reactivas. Cada una necesita su propia RenderTexture.
+· COMBINAR CON EMISIÓN. Si activas Emission en el material de la
+  pantalla (con la RenderTexture como mapa de emisión), la pantalla
+  "brillará" visualmente además de emitir luz dinámica.
+
+
+Errores comunes
+----------------
+· "La luz no se ve" → ¿Está la escena oscura? ¿El Range llega
+  a las paredes? ¿Intensity Multiplier está a mínimo 15?
+· "La luz no cambia de color" → ¿El video es B/N? Prueba con color.
+  ¿El VideoPlayer tiene Target Texture asignado?
+· "La luz parpadea" → Baja el Smooth Speed (ej: 0.05).
+· "El juego va lento" → Sube Sample Every N Frames a 5 o más.
+  Baja Sample Resolution a 2.
