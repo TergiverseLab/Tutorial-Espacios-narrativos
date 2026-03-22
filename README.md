@@ -51,11 +51,3 @@ Proyecto Unity para el taller de **narración espacial y poesía espacial** — 
    Esto hace que la interfaz se ponga roja cuando estás en Play Mode, para que no edites por accidente (los cambios en Play Mode se pierden).
 2. Abre la escena **Level** desde Assets/Scenes/
 
-## Créditos
-
-- Proyecto base: [ExpressiveEnvironment](https://github.com/molleindustria/ExpressiveEnvironment) de Paolo Pedercini (molleindustria)
-- Modelos y materiales: [UnityBasics](https://github.com/molleindustria/UnityBasics) de Paolo Pedercini
-- Audio espacial: [SoundPlace](https://github.com/molleindustria/SoundPlace) de Paolo Pedercini
-- PBR Creator: [PBRCreator](https://github.com/molleindustria/PBRCreator) de Paolo Pedercini
-- X-PostProcessing: [XPostProcessing-URP](https://github.com/QianMo/X-PostProcessing-Library)
-- Terrain Brushes: Unity Asset Store
