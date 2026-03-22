@@ -2,8 +2,6 @@
 
 Proyecto Unity para el taller de **narración espacial y poesía espacial** — BAU 2026.
 
-Basado en los materiales de Paolo Pedercini (CMU) y Clyde (YouTube), con contenido adicional y anotaciones propias.
-
 ## Requisitos
 
 - **Unity 2022.3.62f3 LTS** (exactamente esta versión)
